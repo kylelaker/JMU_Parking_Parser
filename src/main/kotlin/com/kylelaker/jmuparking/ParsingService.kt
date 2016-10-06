@@ -4,11 +4,9 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
-
-import java.util.ArrayList
+import java.util.*
 
 object ParsingService {
-
     val JMU_PARKING_XML = "http://www.jmu.edu/cgi-bin/parking_get_sign_data.cgi"
 
     /**
@@ -29,8 +27,8 @@ object ParsingService {
 
         for (i in 0..nodeList.length - 1) {
             val subElements = nodeList.item(i).childNodes
-            val id = subElements.findFirst("SignId")?.textContent?.trim()?.toInt() ?: -1
-            val display = subElements.findFirst("Display")?.textContent?.trim() ?: ""
+            val id = subElements.findFirst("SignId").textContent.trim().toInt()
+            val display = subElements.findFirst("Display").textContent.trim()
             signs.add(Sign(id, display))
         }
 
@@ -41,9 +39,8 @@ object ParsingService {
      * Extension function for [NodeList] that allows finding a [Node] using
      * [name], the name of the [Node].
      */
-    fun NodeList.findFirst(name: String): Node? {
+    fun NodeList.findFirst(name: String): Node {
         for (i in 0..this.length - 1) if (this.item(i).nodeName.equals(name, ignoreCase = true)) return this.item(i)
-        return null
+        throw NoSuchElementException("The expected element, $name, was not found")
     }
-
 }
