@@ -1,7 +1,6 @@
 package com.kylelaker.jmuparking
 
 fun main(args: Array<String>) {
-
     val signs = ParsingService.parse().sorted()
     val MASON_ID = 24
     val CHAMPIONS_ID = 2
