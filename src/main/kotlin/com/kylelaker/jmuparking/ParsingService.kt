@@ -15,7 +15,6 @@ object ParsingService {
      * [xmlUrl] is the location as a URI string of where the XML file can be found
      */
     fun parse(xmlUrl: String = JMU_PARKING_XML): List<Sign> {
-
         val doc = DocumentBuilderFactory
                 .newInstance()
                 .newDocumentBuilder()
@@ -40,7 +39,7 @@ object ParsingService {
      * [name], the name of the [Node].
      */
     fun NodeList.findFirst(name: String): Node {
-        for (i in 0..this.length - 1) if (this.item(i).nodeName.equals(name, ignoreCase = true)) return this.item(i)
+        for (i in 0..this.length - 1) if (this.item(i).nodeName.equals(name, true)) return this.item(i)
         throw NoSuchElementException("The expected element, $name, was not found")
     }
 }
