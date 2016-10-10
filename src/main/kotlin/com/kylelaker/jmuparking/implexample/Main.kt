@@ -1,4 +1,6 @@
-package com.kylelaker.jmuparking
+package com.kylelaker.jmuparking.implexample
+
+import com.kylelaker.jmuparking.ParsingService
 
 enum class PARKING_DECKS(val id: Int) {
     MASON(24), CHAMPIONS(2), WARSAW(10)

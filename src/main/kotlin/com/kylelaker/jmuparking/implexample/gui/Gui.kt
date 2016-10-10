@@ -1,4 +1,4 @@
-package com.kylelaker.jmuparking.gui
+package com.kylelaker.jmuparking.implexample.gui
 
 import com.kylelaker.jmuparking.ParsingService
 import javafx.application.Application
