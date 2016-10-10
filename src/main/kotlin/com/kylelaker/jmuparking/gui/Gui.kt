@@ -10,18 +10,22 @@ import javafx.stage.Stage
 import java.util.*
 import kotlin.concurrent.timerTask
 
+enum class PARKING_DECKS(val id: Int) {
+    MASON(24), CHAMPIONS(2), WARSAW(10)
+}
+
 class Gui : Application() {
-    val MASON_ID     = 24
-    val CHAMPIONS_ID = 2
-    val WARSAW_ID    = 10
 
     val masonDeckAvailabilityLabel = Label()
     val championsDeckAvailabilityLabel = Label()
     val warsawDeckAvailabilityLabel = Label()
 
     override fun start(stage: Stage) {
-        var col = 0;
-        var row = 0;
+
+        Timer().scheduleAtFixedRate(timerTask { Platform.runLater { updateLabels() } }, 0, 1000)
+
+        var col = 0
+        var row = 0
         stage.title = "JMU Parking Availability"
 
         val root: GridPane = GridPane()
@@ -32,6 +36,7 @@ class Gui : Application() {
         root.add(Label("Mason St."), col++, row)
         root.add(masonDeckAvailabilityLabel, col--, row++)
 
+        //TODO: Use real spacing/padding. Not this stuff
         root.add(Label("Champions Dr.     "), col++, row)
         root.add(championsDeckAvailabilityLabel, col--, row++)
 
@@ -40,20 +45,16 @@ class Gui : Application() {
 
         stage.scene = Scene(root, 300.0, 250.0)
         stage.show()
-
-        Timer().scheduleAtFixedRate(timerTask { Platform.runLater { updateLabels() } }, 0, 2000)
     }
 
     fun updateLabels() {
-        val signs = ParsingService.parse().sorted()
-        masonDeckAvailabilityLabel.text = signs.single { it.id == MASON_ID }.output
-        championsDeckAvailabilityLabel.text = signs.single { it.id == CHAMPIONS_ID }.output
-        warsawDeckAvailabilityLabel.text = signs.single { it.id == WARSAW_ID }.output
+        val signs = ParsingService.parse()
+        masonDeckAvailabilityLabel.text     = signs.single { it.id == PARKING_DECKS.MASON.id     }.output
+        championsDeckAvailabilityLabel.text = signs.single { it.id == PARKING_DECKS.CHAMPIONS.id }.output
+        warsawDeckAvailabilityLabel.text    = signs.single { it.id == PARKING_DECKS.WARSAW.id    }.output
     }
 
     companion object {
-        @JvmStatic fun main(args: Array<String>) {
-            launch(Gui::class.java)
-        }
+        @JvmStatic fun main(args: Array<String>) = launch(Gui::class.java)
     }
 }

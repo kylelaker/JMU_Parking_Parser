@@ -1,17 +1,18 @@
 package com.kylelaker.jmuparking
 
+enum class PARKING_DECKS(val id: Int) {
+    MASON(24), CHAMPIONS(2), WARSAW(10)
+}
+
 fun main(args: Array<String>) {
     val signs = ParsingService.parse().sorted()
 
-    val MASON_ID     = 24
-    val CHAMPIONS_ID = 2
-    val WARSAW_ID    = 10
 
-    val mason     = signs.single { it.id == MASON_ID     }
-    val champions = signs.single { it.id == CHAMPIONS_ID }
-    val warsaw    = signs.single { it.id == WARSAW_ID    }
+    val mason = signs.single { it.id == PARKING_DECKS.MASON.id }.output
+    val champions = signs.single { it.id == PARKING_DECKS.CHAMPIONS.id }.output
+    val warsaw = signs.single { it.id == PARKING_DECKS.WARSAW.id }.output
 
-    println("Mason:     ${mason.output}")
-    println("Champions: ${champions.output}")
-    println("Warsaw:    ${warsaw.output}")
+    println("Mason:     $mason")
+    println("Champions: $champions")
+    println("Warsaw:    $warsaw")
 }
