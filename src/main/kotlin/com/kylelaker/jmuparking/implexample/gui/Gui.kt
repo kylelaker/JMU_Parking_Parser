@@ -22,36 +22,34 @@ class Gui : Application() {
 
     override fun start(stage: Stage) {
 
-        Timer().scheduleAtFixedRate(timerTask { Platform.runLater { updateLabels() } }, 0, 1000)
-
         var col = 0
         var row = 0
         stage.title = "JMU Parking Availability"
 
         val root: GridPane = GridPane()
+        with(root) {
+            add(Label("Parking Deck"), col++, row)
+            add(Label("Spaces available"), col--, row++)
+            add(Label("Mason St."), col++, row)
+            add(masonDeckAvailabilityLabel, col--, row++)
+            add(Label("Champions Dr.     "), col++, row)
+            add(championsDeckAvailabilityLabel, col--, row++)
+            add(Label("Warsaw Ave."), col++, row)
+            add(warsawDeckAvailabilityLabel, /*col--, row++*/ col, row)
+        }
 
-        root.add(Label("Parking Deck"), col++, row)
-        root.add(Label("Spaces available"), col--, row++)
-
-        root.add(Label("Mason St."), col++, row)
-        root.add(masonDeckAvailabilityLabel, col--, row++)
-
-        //TODO: Use real spacing/padding. Not this stuff
-        root.add(Label("Champions Dr.     "), col++, row)
-        root.add(championsDeckAvailabilityLabel, col--, row++)
-
-        root.add(Label("Warsaw Ave."), col++, row)
-        root.add(warsawDeckAvailabilityLabel, /*col--, row++*/ col, row)
+        Timer().scheduleAtFixedRate(timerTask {
+            Platform.runLater {
+                with(ParsingService.parse()) {
+                    masonDeckAvailabilityLabel.text     = single { it.id == PARKING_DECKS.MASON.id     }.output
+                    championsDeckAvailabilityLabel.text = single { it.id == PARKING_DECKS.CHAMPIONS.id }.output
+                    warsawDeckAvailabilityLabel.text    = single { it.id == PARKING_DECKS.WARSAW.id    }.output
+                }
+            }
+        }, 0, 1000)
 
         stage.scene = Scene(root, 300.0, 250.0)
         stage.show()
-    }
-
-    fun updateLabels() {
-        val signs = ParsingService.parse()
-        masonDeckAvailabilityLabel.text     = signs.single { it.id == PARKING_DECKS.MASON.id     }.output
-        championsDeckAvailabilityLabel.text = signs.single { it.id == PARKING_DECKS.CHAMPIONS.id }.output
-        warsawDeckAvailabilityLabel.text    = signs.single { it.id == PARKING_DECKS.WARSAW.id    }.output
     }
 
     companion object {

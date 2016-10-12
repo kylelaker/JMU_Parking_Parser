@@ -7,14 +7,9 @@ enum class PARKING_DECKS(val id: Int) {
 }
 
 fun main(args: Array<String>) {
-    val signs = ParsingService.parse().sorted()
-
-
-    val mason = signs.single { it.id == PARKING_DECKS.MASON.id }.output
-    val champions = signs.single { it.id == PARKING_DECKS.CHAMPIONS.id }.output
-    val warsaw = signs.single { it.id == PARKING_DECKS.WARSAW.id }.output
-
-    println("Mason:     $mason")
-    println("Champions: $champions")
-    println("Warsaw:    $warsaw")
+    with(ParsingService.parse()) {
+        println("Mason:     ${single { it.id == PARKING_DECKS.MASON.id     }.output}")
+        println("Champions: ${single { it.id == PARKING_DECKS.CHAMPIONS.id }.output}")
+        println("Warsaw:    ${single { it.id == PARKING_DECKS.WARSAW.id    }.output}")
+    }
 }

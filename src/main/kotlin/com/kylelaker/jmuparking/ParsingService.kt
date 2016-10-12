@@ -10,6 +10,7 @@ object ParsingService {
 
     val JMU_PARKING_XML = "http://www.jmu.edu/cgi-bin/parking_get_sign_data.cgi"
 
+    @JvmStatic
     fun parse(xmlUrl: String = JMU_PARKING_XML): List<Sign> {
         val doc = DocumentBuilderFactory
                 .newInstance()
@@ -21,10 +22,11 @@ object ParsingService {
         val signs: MutableList<Sign> = ArrayList()
 
         for (signNode in signNodeList) {
-            val subElements = signNode.childNodes
-            val id = subElements.findFirst("SignId").textContent.trim().toInt()
-            val display = subElements.findFirst("Display").textContent.trim()
-            signs.add(Sign(id, display))
+            with (signNode.childNodes) {
+                val id = findFirst("SignId").textContent.trim().toInt()
+                val display = findFirst("Display").textContent.trim()
+                signs.add(Sign(id, display))
+            }
         }
 
         return signs
