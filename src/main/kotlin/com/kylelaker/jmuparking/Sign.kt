@@ -3,13 +3,13 @@ package com.kylelaker.jmuparking
 /**
  * Represents specific data about a sign.
  * [id] is the ID of the sign
- * [display] is what is currently being displayed
+ * [displayText] is what is currently being displayed
  */
-data class Sign(val id: Int, val display: String) : Comparable<Sign> {
+data class Sign(val id: Int, val displayText: String) : Comparable<Sign> {
     val spaces by lazy {
         when {
-            display.matches("[0-9]*".toRegex()) -> Integer.parseInt(display)
-            display.equals("FULL", true) -> 0
+            displayText.matches("[\\d]*".toRegex()) -> displayText.toInt()
+            displayText.equals("FULL", true) -> 0
             else -> Int.MIN_VALUE
         }
     }
@@ -22,6 +22,6 @@ data class Sign(val id: Int, val display: String) : Comparable<Sign> {
         }
     }
 
-    override fun toString() = "SignId: $id -- Display: $display"
+    override fun toString() = "SignId: $id -- Display: $displayText"
     override fun compareTo(other: Sign) = this.id - other.id
 }

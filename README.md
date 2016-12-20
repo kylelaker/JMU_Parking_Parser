@@ -32,7 +32,8 @@ to be, for JMU, similar to the following.
     * Display
         * the current text on the sign
     * Last updated
-        * ISO 8601 time stamp of the last time the text was updated
+        * ISO 8601-ish time stamp of the last time the text was updated. Uses
+        JMU's current local time (EST/EDT).
 
 
 ## Sign IDs

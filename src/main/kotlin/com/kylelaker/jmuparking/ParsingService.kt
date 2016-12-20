@@ -8,30 +8,31 @@ import java.util.*
 
 object ParsingService {
 
+    // Also accessible over https; however, using it results in a significant slowdown
     val JMU_PARKING_XML = "http://www.jmu.edu/cgi-bin/parking_get_sign_data.cgi"
 
-    @JvmStatic
-    fun parse(xmlUrl: String = JMU_PARKING_XML): List<Sign> {
-        val doc = DocumentBuilderFactory
-                .newInstance()
-                .newDocumentBuilder()
-                .parse(xmlUrl)
-        doc.documentElement.normalize()
-
-        val signNodeList = doc.getElementsByTagName("Sign")
-        val signs: MutableList<Sign> = ArrayList()
-
-        for (signNode in signNodeList) {
-            with (signNode.childNodes) {
-                val id = findFirst("SignId").textContent.trim().toInt()
-                val display = findFirst("Display").textContent.trim()
-                signs.add(Sign(id, display))
-            }
-        }
-
+    fun parse(xmlUrl: String = JMU_PARKING_XML): Set<Sign> {
+        val signNodeList = pullSignList(xmlUrl)
+        val signs = HashSet<Sign>()
+        for (signNode in signNodeList) signs += nodeToSign(signNode)
         return signs
     }
 
+    private fun textContent(list: NodeList, name: String) =
+            list.findFirst(name).textContent.trim()
+
+    private fun pullSignList(url: String) = DocumentBuilderFactory
+            .newInstance()
+            .newDocumentBuilder()
+            .parse(url)
+            .getElementsByTagName("Sign")
+
+    private fun nodeToSign(node: Node): Sign {
+        val nodes = node.childNodes
+        val id = textContent(nodes, "SignID").toInt()
+        val display = textContent(nodes, "Display")
+        return Sign(id, display)
+    }
 }
 
 fun NodeList.findFirst(name: String): Node {
