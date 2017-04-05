@@ -5,10 +5,10 @@ package com.kylelaker.jmuparking
  * [id] is the ID of the sign
  * [displayText] is what is currently being displayed
  */
-data class Sign(val id: Int, val displayText: String) : Comparable<Sign> {
+class Sign(val id: Int, val displayText: String) : Comparable<Sign> {
     val spaces by lazy {
         when {
-            displayText.matches("[\\d]*".toRegex()) -> displayText.toInt()
+            displayText.matches("[\\d]+".toRegex()) -> displayText.toInt()
             displayText.equals("FULL", true) -> 0
             else -> Int.MIN_VALUE
         }
@@ -24,4 +24,8 @@ data class Sign(val id: Int, val displayText: String) : Comparable<Sign> {
 
     override fun toString() = "SignId: $id -- Display: $displayText"
     override fun compareTo(other: Sign) = this.id - other.id
+    override fun equals(other: Any?) =
+            other is Sign && id == other.id && displayText == other.displayText
+    override fun hashCode() = (31 * id) + displayText.hashCode()
+
 }

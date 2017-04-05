@@ -1,7 +1,7 @@
 package com.kylelaker.jmuparking.implexample.gui
 
 import com.kylelaker.jmuparking.ParsingService
-import com.kylelaker.jmuparking.implexample.PARKING_DECK
+import com.kylelaker.jmuparking.implexample.PARKING_DECK.*
 import com.kylelaker.jmuparking.implexample.outputString
 import javafx.application.Application
 import javafx.application.Platform
@@ -24,36 +24,37 @@ class Gui : Application() {
         var col = 0
         var row = 0
 
-        val root = GridPane()
-        with(root) {
-            hgap = 10.0
-            add(nameLabel, col++, row)
-            add(spacesLabel, col--, row++)
-            add(Label("Mason St."), col++, row)
-            add(masonDeckAvailabilityLabel, col--, row++)
-            add(Label("Champions Dr."), col++, row)
-            add(championsDeckAvailabilityLabel, col--, row++)
-            add(Label("Warsaw Ave."), col++, row)
-            add(warsawDeckAvailabilityLabel, col--, row++)
-        }
-
         Timer().scheduleAtFixedRate(timerTask {
             Platform.runLater {
-                val data = ParsingService.parse()
-                masonDeckAvailabilityLabel.text     = outputString(PARKING_DECK.MASON,     data)
-                championsDeckAvailabilityLabel.text = outputString(PARKING_DECK.CHAMPIONS, data)
-                warsawDeckAvailabilityLabel.text    = outputString(PARKING_DECK.WARSAW,    data)
+                with (ParsingService.parse()) {
+                    masonDeckAvailabilityLabel.text     = outputString(MASON,     this)
+                    championsDeckAvailabilityLabel.text = outputString(CHAMPIONS, this)
+                    warsawDeckAvailabilityLabel.text    = outputString(WARSAW,    this)
+                }
             }
         }, 0, 1000)
 
-        with(stage) {
+        val root = GridPane().apply {
+            hgap = 10.0
+            //Pattern is: (a) col++, row; (b) col--, row++
+            add(nameLabel, col++, row)
+            add(spacesLabel, col--, row++)
+            add(Label(MASON.deckName), col++, row)
+            add(masonDeckAvailabilityLabel, col--, row++)
+            add(Label(CHAMPIONS.deckName), col++, row)
+            add(championsDeckAvailabilityLabel, col--, row++)
+            add(Label(WARSAW.deckName), col++, row)
+            add(warsawDeckAvailabilityLabel, col--, row++)
+        }
+
+        Platform.setImplicitExit(true)
+        stage.apply {
             title = "JMU Parking Availability"
             scene = Scene(root, 235.0, 75.0)
             isAlwaysOnTop = true
             isResizable = false
-            Platform.setImplicitExit(true)
-            show()
-        }
+        }.show()
+
     }
 
     companion object {

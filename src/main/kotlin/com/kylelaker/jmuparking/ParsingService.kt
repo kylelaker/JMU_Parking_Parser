@@ -8,18 +8,15 @@ import java.util.*
 
 object ParsingService {
 
-    // Also accessible over https; however, using it results in a significant slowdown
-    val JMU_PARKING_XML = "http://www.jmu.edu/cgi-bin/parking_get_sign_data.cgi"
+    val JMU_PARKING_XML = "https://www.jmu.edu/cgi-bin/parking_get_sign_data.cgi"
 
     fun parse(xmlUrl: String = JMU_PARKING_XML): Set<Sign> {
-        val signNodeList = pullSignList(xmlUrl)
-        val signs = HashSet<Sign>()
-        for (signNode in signNodeList) signs += nodeToSign(signNode)
+        val signs = TreeSet<Sign>()
+        for (signNode in pullSignList(xmlUrl)) signs += nodeToSign(signNode)
         return signs
     }
 
-    private fun textContent(list: NodeList, name: String) =
-            list.findFirst(name).textContent.trim()
+    private fun textContent(list: NodeList, name: String) = list.findFirst(name).textContent.trim()
 
     private fun pullSignList(url: String) = DocumentBuilderFactory
             .newInstance()
