@@ -18,7 +18,7 @@ class Sign(val id: Int, val displayText: String) : Comparable<Sign> {
         when (spaces) {
             Int.MIN_VALUE -> "Unavailable"
             0 -> "Full"
-            else -> "$spaces ${if (spaces != 1) "spaces" else "space"} available"
+            else -> "$spaces"
         }
     }
 

@@ -4,6 +4,7 @@ import com.kylelaker.jmuparking.ParsingService
 import com.kylelaker.jmuparking.implexample.PARKING_DECK.*
 
 fun main(args: Array<String>) {
+        println("Deck       Spaces Available")
     with(ParsingService.parse()) {
         println("${MASON.deckName}:     ${outputString(MASON, this)}")
         println("${CHAMPIONS.deckName}: ${outputString(CHAMPIONS, this)}")
