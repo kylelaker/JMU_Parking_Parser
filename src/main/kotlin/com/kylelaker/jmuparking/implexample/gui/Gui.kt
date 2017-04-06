@@ -34,23 +34,21 @@ class Gui : Application() {
             }
         }, 0, 1000)
 
-        val root = GridPane().apply {
-            hgap = 10.0
-            //Pattern is: (a) col++, row; (b) col--, row++
-            add(nameLabel, col++, row)
-            add(spacesLabel, col--, row++)
-            add(Label(MASON.deckName), col++, row)
-            add(masonDeckAvailabilityLabel, col--, row++)
-            add(Label(CHAMPIONS.deckName), col++, row)
-            add(championsDeckAvailabilityLabel, col--, row++)
-            add(Label(WARSAW.deckName), col++, row)
-            add(warsawDeckAvailabilityLabel, col--, row++)
-        }
-
         Platform.setImplicitExit(true)
         stage.apply {
             title = "JMU Parking Availability"
-            scene = Scene(root, 235.0, 75.0)
+            scene = Scene(GridPane().apply {
+                hgap = 10.0
+                //Pattern is: (a) col++, row; (b) col--, row++
+                add(nameLabel, col++, row)
+                add(spacesLabel, col--, row++)
+                add(Label(MASON.deckName), col++, row)
+                add(masonDeckAvailabilityLabel, col--, row++)
+                add(Label(CHAMPIONS.deckName), col++, row)
+                add(championsDeckAvailabilityLabel, col--, row++)
+                add(Label(WARSAW.deckName), col++, row)
+                add(warsawDeckAvailabilityLabel, col--, row++)
+            }, 235.0, 75.0)
             isAlwaysOnTop = true
             isResizable = false
         }.show()
